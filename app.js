@@ -13,8 +13,11 @@ app.set('view engine', 'hjs');
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
+app.use(express.compress());        // enables gzip compression
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.set("jsonp callback", true);
+app.set('json spaces',0);           // setting this to 0 removes whitespace from json
 
 // development only
 if ('development' == app.get('env')) {

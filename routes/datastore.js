@@ -3,8 +3,7 @@ var datastore = require('bodytrack-datastore');
 exports.listSources = function(req, res) {
    datastore.listSources(req.params.uid,
                      function(sources) {
-                        res.type('application/json');
-                        res.send(JSON.stringify(sources));
+                        res.jsonp(sources);
                      });
 };
 
@@ -15,8 +14,7 @@ exports.getTile = function(req, res) {
                      req.params.level,
                      req.params.offset,
                      function(tile) {
-                        res.type('application/json');
-                        res.send(JSON.stringify(tile));
+                        res.jsonp(tile);
                      });
 };
 
