@@ -92,10 +92,9 @@
 
             dateAxis = new DateAxis("dateAxis", "horizontal", {"min" : channel['min_time'], "max" : channel['max_time']});
 
-            dateAxis.addAxisChangeListener(function(event) {
-               console.log("dateAxis.addAxisChangeListener()");
-               // TODO
-            });
+            // TODO?
+            //dateAxis.addAxisChangeListener(function(event) {
+            //});
 
             yAxis = createYAxis(channel, "yAxis1")
             plot = createPlot(1, selectedDevice, dateAxis, yAxis, channel);
@@ -133,7 +132,7 @@
 </head>
 <body>
 <h1>Node Datastore Server</h1>
-{{#isDeviceAndChannelSelected}}
+   {{#isDeviceAndChannelSelected}}
    <h2>{{selectedDevice}}: {{selectedChannel}}</h2>
    <div id="grapher_container">
       <table id="grapher" border="0" cellpadding="0" cellspacing="0" style="display:none">
@@ -160,7 +159,7 @@
          </tr>
       </table>
    </div>
-{{/isDeviceAndChannelSelected}}
+   {{/isDeviceAndChannelSelected}}
 <div id="devices">
    {{#isDatastoreEmpty}}
       The datastore is empty.

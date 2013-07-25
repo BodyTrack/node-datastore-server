@@ -17,7 +17,6 @@ function loadJson(url, successCallback, failureCallback, completeCallback, willC
             cache : willCache,
             url : url,
             success : function(data, textStatus, jqXHR) {
-               console.log("loadJson.success: " + data);
                try {
                   if (typeof successCallback === 'function') {
                      // send the JSON as a String...
@@ -48,7 +47,7 @@ function channelDatasource(userId, deviceName, channelName) {
 
    return function(level, offset, successCallback, failureCallback) {
       var url = urlPrefix + level + "." + offset + ".json";
-      console.log("channelDatasource(" + url + ")");
+      //console.log("channelDatasource(" + url + ")");
       loadJson(url, successCallback, failureCallback, null, true);
    }
 }
