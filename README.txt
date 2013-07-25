@@ -29,7 +29,7 @@ Here's what to do to get the server running:
 
 2) Follow the build and install instructions for the BodyTrack
    Datastore, but install it into this project's "datastore"
-   directory.  This project's "datastore directory should be
+   directory.  This project's "datastore" directory should be
    the parent to the "datastore" and "db" subdirectories.
 
 3) Install Node.js (http://nodejs.org/)
