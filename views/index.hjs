@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Node Datastore Server</title>
+   <style type="text/css">
+      body {
+         margin: 10px !important;
+         font-family: "Gill Sans Light", Verdana, Arial, sans-serif !important;
+         font-size: 10pt !important;
+      }
+
+      #grapher_container {
+         height: 270px;
+      }
+
+      .plotContainer {
+         height: 200px;
+         border: 1px solid black;
+      }
+
+      .plot {
+         height: 200px;
+      }
+
+      #dateAxisContainer {
+         height: 70px;
+         border: 1px solid black;
+         border-bottom-width: 0;
+      }
+
+      #dateAxis {
+         width: auto;
+         height: 70px;
+         z-index: 2;
+      }
+
+      .axisCell {
+         width: 50px;
+         height: 200px;
+      }
+
+      .yAxisContainer {
+         width: 50px;
+         height: 200px;
+         border: 1px solid black;
+         border-left-width: 0;
+      }
+
+      .yAxis {
+         width: 50px;
+         height: 200px;
+      }
+
+         /* Disable the outline when clicking on plots/axes */
+      :focus {
+         outline: none;
+      }
+
+      ::-moz-focus-inner {
+         border: 0;
+      }
+
+      #valueLabel {
+         width: auto;
+         min-width: 200px;
+         text-align: right;
+         padding: 0 5px 0 5px;
+         margin-top: -20px;
+         z-index: 1;
+      }
+
+      #devices {
+         margin-top: 20px;
+      }
+   </style>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+   <script src="/js/grapher4/grapher2.nocache.js"></script>
+   <script src="/js/bodytrack_grapher.js"></script>
+   <script language="JavaScript" type="text/javascript">
+
+      var selectedDevice = "{{selectedDevice}}";
+      var selectedChannel = "{{selectedChannel}}";
+      var channel = JSON.parse('{{{channelJson}}}');
+
+      var dateAxis;
+      var yAxis;
+      var plot;
+      var plotContainer;
+
+      window.grapherLoad = function() {
+         if (selectedDevice != null && selectedChannel != null && selectedDevice.length > 0 && selectedChannel.length > 0) {
+
+            dateAxis = new DateAxis("dateAxis", "horizontal", {"min" : channel['min_time'], "max" : channel['max_time']});
+
+            dateAxis.addAxisChangeListener(function(event) {
+               console.log("dateAxis.addAxisChangeListener()");
+               // TODO
+            });
+
+            yAxis = createYAxis(channel, "yAxis1")
+            plot = createPlot(1, selectedDevice, dateAxis, yAxis, channel);
+            plot.addDataPointListener(displayValue);
+
+            plotContainer = new PlotContainer("pc1", false, [plot]);
+
+            // set up window resize handler
+            $(window).resize(setSizes);
+
+            $("#grapher").show();
+
+            // set initial sizes
+            setSizes();
+         }
+      };
+
+      function setSizes() {
+         var plotContainerWidth = $(window).width() - 20 - $("#column2").width() - $("#column3").width() - 2;
+         var plotContainerHeight = $("#column1").height() - 2;
+         plotContainer.setSize(plotContainerWidth, plotContainerHeight, SequenceNumber.getNext());
+
+         // resize date axis
+         dateAxis.setSize(plotContainerWidth, $("#dateAxis").height(), SequenceNumber.getNext());
+
+         var yAxisElement = $("#yAxis1");
+         yAxis.setSize(yAxisElement.width(), yAxisElement.height(), SequenceNumber.getNext())
+      }
+
+      function displayValue(val) {
+         $("#valueLabel").html(val ? val['dateString'] + " " + val['valueString'] : "");
+      }
+
+   </script>
+</head>
+<body>
+<h1>Node Datastore Server</h1>
+{{#isDeviceAndChannelSelected}}
+   <h2>{{selectedDevice}}: {{selectedChannel}}</h2>
+   <div id="grapher_container">
+      <table id="grapher" border="0" cellpadding="0" cellspacing="0" style="display:none">
+         <tr>
+            <td width="400">
+               <div id="dateAxisContainer">
+                  <div id="dateAxis"></div>
+                  <div id="valueLabel"></div>
+               </div>
+            </td>
+            <td>&nbsp;</td>
+         </tr>
+         <tr>
+            <td width="400" id="column1">
+               <div id="plotContainer1" class="plotContainer">
+                  <div id="pc1" class="plot"></div>
+               </div>
+            </td>
+            <td id="column2" class="axisCell">
+               <div id="yAxisContainer1" class="yAxisContainer">
+                  <div id="yAxis1" class="yAxis"></div>
+               </div>
+            </td>
+         </tr>
+      </table>
+   </div>
+{{/isDeviceAndChannelSelected}}
+<div id="devices">
+   {{#isDatastoreEmpty}}
+      The datastore is empty.
+   {{/isDatastoreEmpty}}
+   {{^isDatastoreEmpty}}
+      Devices and Channels
+      <ul>
+         {{#devices}}
+            <li>
+               {{name}}
+               <ul>
+                  {{#channels}}
+                     <li><a href="/grapher/{{deviceName}}/{{name}}">{{name}}</a></li>
+                  {{/channels}}
+               </ul>
+            </li>
+         {{/devices}}
+         {{^devices}}
+            No devices.
+         {{/devices}}
+      </ul>
+   {{/isDatastoreEmpty}}
+</div>
+</body>
+</html>

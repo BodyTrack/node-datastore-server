@@ -1,0 +1,18 @@
+{
+   "name" : "node-datastore-grapher",
+   "version" : "1.0.0",
+   "author" : {
+      "name" : "Chris Bartley",
+      "email" : "bartley@cmu.edu"
+   },
+   "private" : true,
+   "scripts" : {
+      "start" : "node app.js"
+   },
+   "dependencies" : {
+      "express" : "3.3.4",
+      "hjs" : "*",
+      "temp" : "*",
+      "bodytrack-datastore" : "*"
+   }
+}
