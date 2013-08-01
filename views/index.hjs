@@ -3,13 +3,22 @@
 <head>
    <title>Node Datastore Server</title>
    <style type="text/css">
+         /* Prvent text selection (found at http://wiki.phonegap.com/iPhone:-Prevent-copy-paste and http://stackoverflow.com/questions/7059039/how-to-prevent-accidental-select-drag-highlight-on-webpage-when-drawing-off-html) */
+      .textSelectionDisabled {
+         -moz-user-select: none;
+         -webkit-user-select: none;
+         -webkit-text-size-adjust: none;
+         -ms-user-select: none;
+         user-select: none;
+      }
+
       body {
          margin: 10px !important;
          font-family: "Gill Sans Light", Verdana, Arial, sans-serif !important;
          font-size: 10pt !important;
       }
 
-      #grapher_container {
+      .grapherContainer {
          height: 270px;
       }
 
@@ -134,7 +143,7 @@
 <h1>Node Datastore Server</h1>
    {{#isDeviceAndChannelSelected}}
    <h2>{{selectedDevice}}: {{selectedChannel}}</h2>
-   <div id="grapher_container">
+   <div class="grapherContainer textSelectionDisabled">
       <table id="grapher" border="0" cellpadding="0" cellspacing="0" style="display:none">
          <tr>
             <td width="400">
