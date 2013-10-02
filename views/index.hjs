@@ -108,6 +108,26 @@
             yAxis = createYAxis(channel, "yAxis1")
             plot = createPlot(1, selectedDevice, dateAxis, yAxis, channel);
             plot.addDataPointListener(displayValue);
+            plot.setStyle(
+                  {
+                     "styles" : [
+                        {
+                           "type" : "line",
+                           "lineWidth" : 1,
+                           "show" : true,
+                           "color" : "#0000ff"
+                        },
+                        {
+                           "type" : "lollipop",
+                           "lineWidth" : 1,
+                           "radius" : 0,
+                           "fill" : false,
+                           "show" : true,
+                           "color" : "#0000ff"
+                        }
+                     ]
+                  }
+            );
 
             plotContainer = new PlotContainer("pc1", false, [plot]);
 
