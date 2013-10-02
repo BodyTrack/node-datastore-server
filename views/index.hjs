@@ -125,7 +125,28 @@
                            "show" : true,
                            "color" : "#0000ff"
                         }
-                     ]
+                     ],
+                     highlight : {
+                        "lineWidth" : 1,
+                        "styles" : [
+                           {
+                              "type" : "lollipop",
+                              "color" : "#ff0000",
+                              "radius" : 1,
+                              "lineWidth" : 1,
+                              "fill" : false
+                           },
+                           {
+                              "show" : true,
+                              "type" : "value",
+                              "fillColor" : "#ff0000",
+                              "marginWidth" : 10,
+                              "font" : "7pt Helvetica,Arial,Verdana,sans-serif",
+                              "verticalOffset" : 7,
+                              "numberFormat" : "###,##0.0##"
+                           }
+                        ]
+                     }
                   }
             );
 
