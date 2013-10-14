@@ -87,6 +87,7 @@
    <script src="/js/bodytrack_grapher.js"></script>
    <script language="JavaScript" type="text/javascript">
 
+      var userId = "{{userId}}";
       var selectedDevice = "{{selectedDevice}}";
       var selectedChannel = "{{selectedChannel}}";
       var channel = JSON.parse('{{{channelJson}}}');
@@ -106,7 +107,7 @@
             //});
 
             yAxis = createYAxis(channel, "yAxis1")
-            plot = createPlot(1, selectedDevice, dateAxis, yAxis, channel);
+            plot = createPlot(userId, selectedDevice, dateAxis, yAxis, channel);
             plot.addDataPointListener(displayValue);
             plot.setStyle(
                   {
@@ -222,7 +223,7 @@
                {{name}}
                <ul>
                   {{#channels}}
-                     <li><a href="/grapher/{{deviceName}}/{{name}}">{{name}}</a></li>
+                     <li><a href="/grapher/{{userId}}/{{deviceName}}/{{name}}">{{name}}</a></li>
                   {{/channels}}
                </ul>
             </li>

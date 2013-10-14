@@ -25,7 +25,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/grapher/:deviceNickname/:channelName', routes.index);
+app.get('/grapher/:uid', routes.index);
+app.get('/grapher/:uid/:deviceNickname/:channelName', routes.index);
 app.get('/users/:uid/sources/list', datastore.listSources);
 app.get('/tiles/:uid/:deviceNickname.:channelName/:level.:offset.json', datastore.getTile);
 app.post('/api/bodytrack/jupload', datastore.uploadJson);

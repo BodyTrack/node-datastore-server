@@ -1,7 +1,16 @@
 var datastore = require('bodytrack-datastore');
 
 exports.index = function(req, res) {
-   datastore.listSources(datastore.DEFAULT_USER_ID,   // for now, just always use the default user ID
+   // Use the default user ID unless a different (valid) one is specified in the URL.
+   var userId = datastore.DEFAULT_USER_ID;
+   if (typeof req.params.uid !== 'undefined') {
+      var userIdAsInt = parseInt(req.params.uid,10);
+      if (!isNaN(userIdAsInt) && userIdAsInt >= 0) {
+         userId = userIdAsInt;
+      }
+   }
+
+   datastore.listSources(userId,
                          function(sources) {
 
                             var selectedDevice = '';
@@ -43,6 +52,7 @@ exports.index = function(req, res) {
                                              title : 'Simple Datastore Server',
                                              devices : sources,
                                              channelJson : JSON.stringify(channel),
+                                             userId : userId,
                                              selectedDevice : selectedDevice,
                                              selectedChannel : selectedChannel,
                                              isDeviceAndChannelSelected : selectedDevice != '' && selectedChannel != '',
