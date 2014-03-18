@@ -83,7 +83,7 @@
       }
    </style>
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-   <script src="/js/grapher4/grapher2.nocache.js"></script>
+   <script src="/js/grapher/grapher2.nocache.js"></script>
    <script src="/js/bodytrack_grapher.js"></script>
    <script language="JavaScript" type="text/javascript">
 
