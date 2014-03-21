@@ -63,7 +63,7 @@
   </component>
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{Node.js Dependencies for Node Datastore Server}" />
-    <file url="PROJECT" libraries="{Node.js Dependencies for Node Datastore Server, Node.js v0.10.26 Core Modules, jQuery UI 1.10.3}" />
+    <file url="PROJECT" libraries="{Node.js Dependencies for Node Datastore Server, Node.js v0.10.26 Core Modules}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
   <component name="ProjectCodeStyleSettingsManager">
