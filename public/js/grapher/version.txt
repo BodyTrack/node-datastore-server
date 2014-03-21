@@ -1,1 +1,1 @@
-Corresponds to commit 3385d53b7199812b9b4a33d62649f1d6195280a4 from the "stripchart" branch.
+Corresponds to commit 2a2c196 from the "stripchart" branch.
