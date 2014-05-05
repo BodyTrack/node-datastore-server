@@ -1,6 +1,6 @@
 {
    "name" : "node-datastore-grapher",
-   "version" : "1.0.0",
+   "version" : "1.2.0",
    "author" : {
       "name" : "Chris Bartley",
       "email" : "bartley@cmu.edu"
@@ -13,6 +13,6 @@
       "express" : "3.3.4",
       "hjs" : "*",
       "temp" : "*",
-      "bodytrack-datastore" : "*"
+      "bodytrack-datastore" : "0.1.0"
    }
 }

@@ -19,9 +19,7 @@
       </profile>
     </annotationProcessing>
   </component>
-  <component name="CopyrightManager" default="">
-    <module2copyright />
-  </component>
+  <component name="CopyrightManager" default="" />
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -62,7 +60,6 @@
     <version value="1.0" />
   </component>
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{Node.js Dependencies for Node Datastore Server}" />
     <file url="PROJECT" libraries="{Node.js Dependencies for Node Datastore Server, Node.js v0.10.26 Core Modules}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
@@ -298,6 +295,11 @@
             <option name="TAB_SIZE" value="3" />
           </indentOptions>
         </codeStyleSettings>
+        <codeStyleSettings language="Python">
+          <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+          <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+          <option name="PARENT_SETTINGS_INSTALLED" value="true" />
+        </codeStyleSettings>
         <codeStyleSettings language="SCSS">
           <indentOptions>
             <option name="INDENT_SIZE" value="3" />
@@ -380,7 +382,6 @@
   </component>
   <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="app.js" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="/usr/local/bin/node" path-to-js-file="app.js" working-dir="$PROJECT_DIR$">
-      <browser start="false" url="" with-js-debugger="false" />
       <method />
     </configuration>
   </component>
@@ -418,11 +419,6 @@
   </component>
   <component name="libraryTable">
     <library name="Node.js Dependencies for Node Datastore Server" type="javaScript">
-      <properties>
-        <sourceFilesUrls>
-          <item url="file://$PROJECT_DIR$/node_modules" />
-        </sourceFilesUrls>
-      </properties>
       <CLASSES>
         <root url="file://$PROJECT_DIR$/node_modules" />
       </CLASSES>
