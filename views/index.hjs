@@ -3,7 +3,7 @@
 <head>
    <title>Node Datastore Server</title>
    <style type="text/css">
-         /* Prvent text selection (found at http://wiki.phonegap.com/iPhone:-Prevent-copy-paste and http://stackoverflow.com/questions/7059039/how-to-prevent-accidental-select-drag-highlight-on-webpage-when-drawing-off-html) */
+         /* Prevent text selection (found at http://wiki.phonegap.com/iPhone:-Prevent-copy-paste and http://stackoverflow.com/questions/7059039/how-to-prevent-accidental-select-drag-highlight-on-webpage-when-drawing-off-html) */
       .textSelectionDisabled {
          -moz-user-select: none;
          -webkit-user-select: none;
