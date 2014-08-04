@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Node Datastore Server</title>
+   <style type="text/css">
+         /* Prevent text selection (found at http://wiki.phonegap.com/iPhone:-Prevent-copy-paste and http://stackoverflow.com/questions/7059039/how-to-prevent-accidental-select-drag-highlight-on-webpage-when-drawing-off-html) */
+      .textSelectionDisabled {
+         -moz-user-select: none;
+         -webkit-user-select: none;
+         -webkit-text-size-adjust: none;
+         -ms-user-select: none;
+         user-select: none;
+      }
+
+      body {
+         margin: 10px !important;
+         font-family: "Gill Sans Light", Verdana, Arial, sans-serif !important;
+         font-size: 10pt !important;
+      }
+
+      .grapherContainer {
+         height: 470px;
+      }
+
+      .plotContainer {
+         height: 400px;
+         border: 1px solid black;
+      }
+
+      .plot {
+         height: 400px;
+      }
+
+      #dateAxisContainer {
+         height: 70px;
+         border: 1px solid black;
+         border-bottom-width: 0;
+      }
+
+      #dateAxis {
+         width: auto;
+         height: 70px;
+         z-index: 2;
+      }
+
+      .axisCell {
+         width: 40px;
+         height: 400px;
+      }
+
+      .yAxisContainer {
+         width: 40px;
+         height: 400px;
+         border: 1px solid black;
+         border-left-width: 0;
+      }
+
+      .yAxis {
+         width: 40px;
+         height: 400px;
+      }
+
+         /* Disable the outline when clicking on plots/axes */
+      :focus {
+         outline: none;
+      }
+
+      ::-moz-focus-inner {
+         border: 0;
+      }
+
+      #valueLabel {
+         width: auto;
+         min-width: 200px;
+         text-align: right;
+         padding: 0 5px 0 5px;
+         margin-top: -20px;
+         z-index: 1;
+      }
+
+      #devices {
+         margin-top: 20px;
+      }
+   </style>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+   <script src="/js/grapher/grapher2.nocache.js"></script>
+   <script src="/js/bodytrack_grapher.js"></script>
+   <script language="JavaScript" type="text/javascript">
+
+      var userId = "{{userId}}";
+      var selectedDevicesAndChannels = JSON.parse('{{{devicesAndChannels}}}');
+
+      var dateAxis;
+      var yAxes = [];
+      var plotContainer;
+      var isSomethingSelected = {{isSomethingSelected}};
+      var colors = ["#dd0000","#0000dd","#00cc00","#000000"];
+
+      window.grapherLoad = function() {
+
+         if (isSomethingSelected) {
+
+            // iterate over each device.channel to figure out the min and max times
+            var minTime = Number.MAX_VALUE;
+            var maxTime = Number.MIN_VALUE;
+            Object.keys(selectedDevicesAndChannels).sort().forEach(function(deviceAndChannel){
+            var channel = selectedDevicesAndChannels[deviceAndChannel]
+               minTime = Math.min(minTime,channel.min_time);
+               maxTime = Math.max(maxTime,channel.max_time);
+            });
+            dateAxis = new DateAxis("dateAxis", "horizontal", {"min" : minTime, "max" : maxTime});
+
+            // iterate over each device.channel and add each to the grapher
+            var count = 0;
+            var plots = [];
+            Object.keys(selectedDevicesAndChannels).sort().forEach(function(deviceAndChannel){
+               var channel = selectedDevicesAndChannels[deviceAndChannel];
+               var color = colors[count % colors.length];
+               $("#devicesAndChannels").append('<div style="color:'+color+'">'+deviceAndChannel+'</div>');
+
+               // create the DOM element to hold the Y axis
+               var yAxisElementName = "yAxis" + count;
+               $("#yAxes").append('<td class="axisCell"><div class="yAxisContainer"><div id="'+yAxisElementName+'" class="yAxis"></div></div></td>');
+               $("#colors").append('<td style="background-color:'+color+'">&nbsp;</td>');
+
+               // create the Y axis
+               var yAxis = createYAxis(channel, yAxisElementName);
+               yAxes.push({yAxis:yAxis, yAxisElementName:yAxisElementName});
+
+               var plot = createPlot(userId, channel.deviceName, dateAxis, yAxis, channel);
+               plot.addDataPointListener(displayValue);
+               plot.setStyle(
+                     {
+                        "styles" : [
+                           {
+                              "type" : "line",
+                              "lineWidth" : 1,
+                              "show" : true,
+                              "color" : color
+                           }
+                        ],
+                        highlight : {
+                           "lineWidth" : 1,
+                           "styles" : [
+                              {
+                                 "type" : "lollipop",
+                                 "color" : "#ff0000",
+                                 "radius" : 1,
+                                 "lineWidth" : 1,
+                                 "fill" : false
+                              },
+                              {
+                                 "show" : true,
+                                 "type" : "value",
+                                 "fillColor" : "#ff0000",
+                                 "marginWidth" : 10,
+                                 "font" : "7pt Helvetica,Arial,Verdana,sans-serif",
+                                 "verticalOffset" : 7,
+                                 "numberFormat" : "###,##0.0##"
+                              }
+                           ]
+                        }
+                     }
+               );
+               plots.push(plot);
+
+               count++;
+            });
+
+            plotContainer = new PlotContainer("pc1", false, plots);
+
+            // set up window resize handler
+            $(window).resize(setSizes);
+
+            $("#grapher").show();
+
+            // set initial sizes
+            setSizes();
+
+         }
+      };
+
+
+      function setSizes() {
+         var plotContainerWidth = $(window).width() - 20 - $("#column2").width() - 2;
+         var plotContainerHeight = $("#column1").height() - 2;
+         plotContainer.setSize(plotContainerWidth, plotContainerHeight, SequenceNumber.getNext());
+
+         // resize date axis
+         dateAxis.setSize(plotContainerWidth, $("#dateAxis").height(), SequenceNumber.getNext());
+
+         yAxes.forEach(function(yAxis){
+            var yAxisElement = $("#" + yAxis.yAxisElementName);
+            yAxis.yAxis.setSize(yAxisElement.width(), yAxisElement.height(), SequenceNumber.getNext())
+         });
+      }
+
+      function displayValue(val) {
+         $("#valueLabel").html(val ? val['dateString'] + " " + val['valueString'] : "");
+      }
+
+   </script>
+</head>
+<body>
+<h1>Node Datastore Server</h1>
+{{#isSomethingSelected}}
+<h2 id="devicesAndChannels"></h2>
+<div class="grapherContainer textSelectionDisabled">
+   <table id="grapher" border="0" cellpadding="0" cellspacing="0" style="display:none">
+      <tr>
+         <td width="400">
+            <div id="dateAxisContainer">
+               <div id="dateAxis"></div>
+               <div id="valueLabel"></div>
+            </div>
+         </td>
+         <td>&nbsp;</td>
+      </tr>
+      <tr id="grapherRow" valign="top">
+         <td id="column1" width="400">
+            <div id="plotContainer1" class="plotContainer">
+               <div id="pc1" class="plot"></div>
+            </div>
+         </td>
+         <td id="column2">
+            <table border="0" cellpadding="0" cellspacing="0">
+               <tr id="yAxes"></tr>
+               <tr id="colors"></tr>
+            </table>
+         </td>
+      </tr>
+   </table>
+</div>
+{{/isSomethingSelected}}
+</body>
+</html>

@@ -167,6 +167,75 @@ exports.index = function(req, res) {
                      });
 };
 
+exports.multigrapher = function(req, res) {
+   // Use the default user ID unless a different (valid) one is specified in the URL.
+   var userId = DEFAULT_USER_ID;
+   if (typeof req.params.uid !== 'undefined') {
+      var userIdAsInt = parseInt(req.params.uid, 10);
+      if (!isNaN(userIdAsInt) && userIdAsInt >= 0) {
+         userId = userIdAsInt;
+      }
+   }
+
+   // split and trim
+   var requestedDevicesAndChannels = req.params.devicesAndChannels.split(",").map(function(item) {
+      return item.trim()
+   });
+
+   datastore.getInfo(userId,
+                     function(err, infoResponse) {
+
+                        var sources = createSources(infoResponse);
+                        //console.log("SOURCES: " + JSON.stringify(sources, null, 3));
+
+                        // first validate each of the requested devices/channels, and remove any dupes by storing them in a set.
+                        // We'll also get the channel specs from the sources retrieved above
+                        var devicesAndChannels = {};
+                        var count = 0;
+                        requestedDevicesAndChannels.forEach(function(deviceAndChannel) {
+                           if (infoResponse['channel_specs'].hasOwnProperty(deviceAndChannel)) {
+                              if (typeof devicesAndChannels[deviceAndChannel] === 'undefined') {
+                                 var deviceAndChannelSplit = deviceAndChannel.split('.').map(function(item) {
+                                    return item.trim()
+                                 });
+                                 if (deviceAndChannelSplit.length >= 2) {
+                                    var deviceName = deviceAndChannelSplit[0];
+                                    var channelName = deviceAndChannelSplit[1];
+
+                                    for (var i = 0; i < sources.length; i++) {
+                                       if (sources[i]['name'] == deviceName) {
+                                          // we found the device, so try to find the channel
+                                          var channels = sources[i]['channels'];
+                                          for (var j = 0; j < channels.length; j++) {
+                                             if (channels[j]['name'] == channelName) {
+                                                devicesAndChannels[deviceAndChannel] = channels[j];
+                                                count++;
+                                                break;
+                                             }
+                                          }
+                                          break;
+                                       }
+                                    }
+                                 }
+                              }
+
+                           }
+                        });
+
+                        console.log("devicesAndChannels = " + JSON.stringify(devicesAndChannels, null, 3));
+
+                        res.render('multigrapher',
+                                   {
+                                      title : 'Simple Datastore Server',
+                                      devices : sources,
+                                      userId : userId,
+                                      devicesAndChannels : JSON.stringify(devicesAndChannels),
+                                      isSomethingSelected : count > 0,
+                                      isDatastoreEmpty : sources.length == 0
+                                   });
+                     });
+};
+
 exports.listSources = function(req, res) {
    datastore.getInfo(req.params.uid,
                      function(err, infoResponse) {
