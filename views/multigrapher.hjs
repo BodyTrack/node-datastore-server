@@ -19,16 +19,16 @@
       }
 
       .grapherContainer {
-         height: 470px;
+         height: 480px;
       }
 
       .plotContainer {
-         height: 400px;
+         height: 410px;
          border: 1px solid black;
       }
 
       .plot {
-         height: 400px;
+         height: 410px;
       }
 
       #dateAxisContainer {
@@ -60,7 +60,10 @@
          height: 400px;
       }
 
-         /* Disable the outline when clicking on plots/axes */
+      #colors {
+      height:10px;
+      }
+      /* Disable the outline when clicking on plots/axes */
       :focus {
          outline: none;
       }
@@ -121,7 +124,7 @@
                // create the DOM element to hold the Y axis
                var yAxisElementName = "yAxis" + count;
                $("#yAxes").append('<td class="axisCell"><div class="yAxisContainer"><div id="'+yAxisElementName+'" class="yAxis"></div></div></td>');
-               $("#colors").append('<td style="background-color:'+color+'">&nbsp;</td>');
+               $("#colors").append('<td style="background-color:'+color+'"></td>');
 
                // create the Y axis
                var yAxis = createYAxis(channel, yAxisElementName);
@@ -137,7 +140,15 @@
                               "lineWidth" : 1,
                               "show" : true,
                               "color" : color
-                           }
+                           },
+                                                    {
+                                                       "type" : "lollipop",
+                                                       "lineWidth" : 1,
+                                                       "radius" : 0,
+                                                       "fill" : false,
+                                                       "show" : true,
+                                                       "color" : color
+                                                    }
                         ],
                         highlight : {
                            "lineWidth" : 1,
