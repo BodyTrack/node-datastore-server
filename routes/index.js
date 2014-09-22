@@ -108,7 +108,7 @@ exports.index = function(req, res) {
 
    console.log("userId: " + userId);
 
-   datastore.getInfo(userId,
+   datastore.getInfo({userId : userId},
                      function(err, infoResponse) {
 
                         console.log("INFO RESPONSE: " + JSON.stringify(infoResponse, null, 3));
@@ -182,7 +182,7 @@ exports.multigrapher = function(req, res) {
       return item.trim()
    });
 
-   datastore.getInfo(userId,
+   datastore.getInfo({userId : req.params.uid},
                      function(err, infoResponse) {
 
                         var sources = createSources(infoResponse);
@@ -237,7 +237,7 @@ exports.multigrapher = function(req, res) {
 };
 
 exports.listSources = function(req, res) {
-   datastore.getInfo(req.params.uid,
+   datastore.getInfo({userId : req.params.uid},
                      function(err, infoResponse) {
                         if (err) {
                            // TODO: do something better
