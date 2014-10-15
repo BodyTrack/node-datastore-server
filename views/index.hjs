@@ -147,7 +147,21 @@
                               "numberFormat" : "###,##0.0##"
                            }
                         ]
-                     }
+                     },
+                     "comments": {
+                                         "show": true,
+                                         "styles": [{
+                                             "type": "point",
+                                             "show": true,
+                                             "lineWidth": 1,
+                                             "radius": 3,
+                                             "color": "rgb(119, 119, 119)",
+                                             "fill": true,
+                                             "fillColor": "rgb(119, 119, 119)"
+                                         }
+                                         ],
+                                         "verticalMargin": 4
+                                     }
                   }
             );
 
