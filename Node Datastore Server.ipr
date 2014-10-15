@@ -60,7 +60,7 @@
     <version value="1.0" />
   </component>
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{Node.js Dependencies for Node Datastore Server, Node.js v0.10.28 Core Modules}" />
+    <file url="PROJECT" libraries="{Node.js Dependencies for Node Datastore Server, Node.js v0.10.30 Core Modules}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
   <component name="ProjectCodeStyleSettingsManager">
